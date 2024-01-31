@@ -3,10 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/flyaways/audit"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -18,24 +16,24 @@ func main() {
 	audit.Startup(cfg)
 	defer audit.Sync()
 
-	//TODO: setting to replace
-	gin.DefaultWriter = audit.AccessWriter() //access.log
-	// gin.DefaultErrorWriter = audit.JournalWriter() //default to escape.log
-	log.SetOutput(audit.JournalWriter()) //journal.log
+	// //TODO: setting to replace
+	// gin.DefaultWriter = audit.AccessWriter() //access.log
+	// // gin.DefaultErrorWriter = audit.JournalWriter() //default to escape.log
+	// log.SetOutput(audit.JournalWriter()) //journal.log
 
-	//TODO:
-	r := gin.Default()
-	r.Any("/*path", func(c *gin.Context) {
-		param := c.Param("path")
-		log.Println(param)
+	// //TODO:
+	// r := gin.Default()
+	// r.Any("/*path", func(c *gin.Context) {
+	// 	param := c.Param("path")
+	// 	log.Println(param)
 
-		if param == "/panic" {
-			panic("PING")
-		}
+	// 	if param == "/panic" {
+	// 		panic("PING")
+	// 	}
 
-		c.JSON(http.StatusOK, gin.H{})
-	})
-	r.Run()
+	// 	c.JSON(http.StatusOK, gin.H{})
+	// })
+	// r.Run()
 
 	journal := zap.L()
 	journal.Info("say", zap.String("hello", "world")) // journal.log
